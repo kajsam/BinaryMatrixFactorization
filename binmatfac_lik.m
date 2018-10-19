@@ -16,18 +16,22 @@ for k = 1: K
   H(k,:) = h;
   mask = mask | w*h;
   toc
-  figure(fig_nr), imagesc(mask), colormap(gray), title(k), drawnow
+  FP = sum(sum(mask & ~X));
+  FN = sum(sum(~mask & X));
+  figure(fig_nr), imagesc(mask), colormap(gray), title([FP FN]), drawnow
+  xlabel(k)
+  if FP > FN % this did not work
+    break
+  end
 end  
 
 Z = W;
 mask = false(n,d);
 for k = 1: K
-  tic
   [w, h, Z] = select_column_all(X,Z,mask);
   W(:,k) = w;
- 
   H(k,:) = h;
+  
   mask = mask | w*h;
-  toc
-  figure(fig_nr+1), imagesc(mask), colormap(gray), title(k), drawnow
+  figure(fig_nr), imagesc(mask), colormap(gray), title(k), drawnow
 end  
