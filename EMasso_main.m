@@ -32,6 +32,8 @@ Z{1} = reduxZoverlap(Z{1}, min_class);
 figure(fig_nr+1), imagesc(Z{1}), colormap(gray), title(size(Z{1},2))
 drawnow
 
+sets = column_set(Z{1} ,min_class);
+
 K = min(K,size(Z{1},2));
 if A0 == 0
   % Association matrix
@@ -48,17 +50,17 @@ figure(fig_nr+1), imagesc(A{1}), colormap(gray)
 title(strcat('Initial A, K = ',' ',num2str(K)))
 [n1 sum(sum(A{1}))]
 % Complete rounds
-return
+
 for r = 1: 2
   fig_nr = fig_nr+3;
   [alphabeta_c, cell_effect] = alpha_beta_cell(X, A{r}, 0);
 
   Z{r+1} = association_matrix_cell_adjusted(X, A{r}, alphabeta_c(end,:), min_class, fig_nr-1);
-  pause
-  Z{r+1} = cell_association_matrix(X, A{r}, cell_effect,[fig_nr fig_nr+1]);
+  % pause
+  % Z{r+1} = cell_association_matrix(X, A{r}, cell_effect,[fig_nr fig_nr+1]);
   ylabel(r+1)
-  cc = size(Z{r+1},2);
-  K = min(K,floor(cc/2));
+  %cc = size(Z{r+1},2);
+  K = min(K,size(Z{r+1},2));
   if K < 3
     break
   end
